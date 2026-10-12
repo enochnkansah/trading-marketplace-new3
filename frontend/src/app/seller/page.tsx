@@ -7,6 +7,8 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
+
+import { API_ORIGIN } from "@/lib/config";
 import {
   ArrowLeft,
   Check,
@@ -61,7 +63,7 @@ interface Product {
 
 type Condition = "NEW" | "USED" | "REFURBISHED";
 
-const API_SERVER_URL = "http://127.0.0.1:8000";
+const API_SERVER_URL = API_ORIGIN;
 
 export default function SellerPage() {
   // =========================================================

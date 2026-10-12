@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { API_ORIGIN } from "@/lib/config";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -32,7 +34,7 @@ interface Product {
   is_active: boolean;
 }
 
-const DJANGO_BASE_URL = "http://127.0.0.1:8000";
+const DJANGO_BASE_URL = API_ORIGIN;
 
 function getImageUrl(image: string | null | undefined): string | null {
   if (!image) return null;

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { API_ORIGIN } from "@/lib/config";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -36,7 +38,7 @@ interface Product {
   updated_at: string;
 }
 
-const DJANGO_BASE_URL = "http://127.0.0.1:8000";
+const DJANGO_BASE_URL = API_ORIGIN;
 
 /**
  * Convert a Django image value into a complete browser URL.

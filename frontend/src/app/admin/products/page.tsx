@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { API_ORIGIN } from "@/lib/config";
 import {
   CheckCircle2,
   ChevronDown,
@@ -93,7 +95,7 @@ function getImageUrl(image: string | null) {
     return image;
   }
 
-  return `http://127.0.0.1:8000${
+  return `${API_ORIGIN}${
     image.startsWith("/") ? "" : "/"
   }${image}`;
 }
