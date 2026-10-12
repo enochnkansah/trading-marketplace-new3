@@ -1,0 +1,51 @@
+﻿# Secrets and environment files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Django generated files and local uploads
+backend/media/
+backend/staticfiles/
+
+# Node.js and Next.js
+node_modules/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local database backups
+*.dump
+*.sql
+*.backup
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Old incomplete frontend backup
+/frontend-incomplete-backup/
+
+# Uploaded product image — keep out of source control
+/backend/products/23d294ea-7dce-4306-bad4-9b60e77e8eff.png
