@@ -229,15 +229,21 @@ class PaymentViewSet(viewsets.ViewSet):
 
             paystack_data = paystack_response.json()
 
-        except requests.RequestException:
+        except requests.RequestException as exc:
+            # Log the exception type without exposing payment credentials.
+            import logging
+
+            logging.getLogger(__name__).error(
+                "Paystack connection failed: %s",
+                type(exc).__name__,
+            )
+
             return Response(
                 {
-                    "detail": (
-                        "Unable to connect to Paystack."
-                    )
+                    "detail": "Unable to connect to Paystack."
                 },
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
-            )
+    )
 
         except ValueError:
             return Response(
