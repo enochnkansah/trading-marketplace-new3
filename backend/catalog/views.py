@@ -1,3 +1,6 @@
+
+import logging
+
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
@@ -10,6 +13,9 @@ from .serializers import (
     ProductUpdateSerializer,
 )
 from .permissions import IsSellerOrAdmin
+
+
+logger = logging.getLogger(__name__)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -41,6 +47,19 @@ class ProductViewSet(viewsets.ModelViewSet):
             permission_classes = [IsSellerOrAdmin]
 
         return [permission() for permission in permission_classes]
+
+    def create(self, request, *args, **kwargs):
+        """
+        Create a product and log unexpected failures for diagnosis.
+        """
+        try:
+            return super().create(request, *args, **kwargs)
+        except Exception:
+            logger.exception(
+                "Product creation failed. Image attached: %s",
+                bool(request.FILES.get("image")),
+            )
+            raise
 
     def perform_create(self, serializer):
         serializer.save(seller=self.request.user)
