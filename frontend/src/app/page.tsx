@@ -1,10 +1,9 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  ShoppingCart,
-  User,
   Store,
   Truck,
   ShieldCheck,
@@ -79,7 +78,7 @@ export default function HomePage() {
 
         const response = await api.get("/products/");
 
-        const data = Array.isArray(response.data)
+        const data: Product[] = Array.isArray(response.data)
           ? response.data
           : response.data.results || [];
 
@@ -95,11 +94,40 @@ export default function HomePage() {
   }, []);
 
   const formatPrice = (price: string) => {
-    return `₵${Number(price).toLocaleString("en-GH", {
+    return `GH₵${Number(price).toLocaleString("en-GH", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     })}`;
   };
+
+  // Category IDs from the current Django API:
+  // 3 = Agricultural Equipment
+  // 6 = Farm Inputs
+  const equipmentProducts = products.filter(
+    (product) => product.category === 3
+  );
+
+  const farmInputProducts = products.filter(
+    (product) => product.category === 6
+  );
+
+  // Select up to three products from each category.
+  const primaryProducts = [
+    ...equipmentProducts.slice(0, 3),
+    ...farmInputProducts.slice(0, 3),
+  ];
+
+  // Fill any remaining spaces with other products.
+  const selectedIds = new Set(
+    primaryProducts.map((product) => product.id)
+  );
+
+  const featuredProducts = [
+    ...primaryProducts,
+    ...products.filter(
+      (product) => !selectedIds.has(product.id)
+    ),
+  ].slice(0, 6);
 
   return (
     <main className="min-h-screen bg-background">
@@ -237,10 +265,7 @@ export default function HomePage() {
       </section>
 
       {/* ================= PRODUCTS ================= */}
-      <section
-        id="products"
-        className="border-b"
-      >
+      <section id="products" className="border-b">
         <div className="mx-auto max-w-7xl px-6 py-16">
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
@@ -249,8 +274,8 @@ export default function HomePage() {
               </h2>
 
               <p className="mt-2 text-muted-foreground">
-                Agricultural products and equipment available
-                from our marketplace.
+                Discover agricultural equipment and farm inputs
+                available from our marketplace.
               </p>
             </div>
           </div>
@@ -259,7 +284,7 @@ export default function HomePage() {
             <div className="py-20 text-center text-muted-foreground">
               Loading agricultural products...
             </div>
-          ) : products.length === 0 ? (
+          ) : featuredProducts.length === 0 ? (
             <div className="rounded-2xl border p-12 text-center">
               <Package className="mx-auto h-10 w-10 text-muted-foreground" />
 
@@ -273,7 +298,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {products.slice(0, 6).map((product) => (
+              {featuredProducts.map((product) => (
                 <Link
                   key={product.id}
                   href={`/products/${product.id}`}
@@ -382,24 +407,15 @@ export default function HomePage() {
           </div>
 
           <div className="flex gap-5 text-sm text-muted-foreground">
-            <Link
-              href="/"
-              className="hover:text-foreground"
-            >
+            <Link href="/" className="hover:text-foreground">
               Buy
             </Link>
 
-            <Link
-              href="/seller"
-              className="hover:text-foreground"
-            >
+            <Link href="/seller" className="hover:text-foreground">
               Sell
             </Link>
 
-            <Link
-              href="/cart"
-              className="hover:text-foreground"
-            >
+            <Link href="/cart" className="hover:text-foreground">
               Cart
             </Link>
           </div>
