@@ -123,11 +123,11 @@ export default function HomePage() {
   );
 
   const featuredProducts = [
-    ...primaryProducts,
-    ...products.filter(
-      (product) => !selectedIds.has(product.id)
-    ),
-  ].slice(0, 6);
+  ...primaryProducts,
+  ...products.filter(
+    (product) => !selectedIds.has(product.id)
+  ),
+];
 
   return (
     <main className="min-h-screen bg-background">
