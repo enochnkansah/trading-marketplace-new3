@@ -143,7 +143,13 @@ CORS_ALLOWED_ORIGINS = [
     origin.strip().rstrip("/")
     for origin in os.getenv(
         "CORS_ALLOWED_ORIGINS",
-        "http://localhost:3000,http://127.0.0.1:3000",
+        (
+            "http://localhost:3000,"
+            "http://127.0.0.1:3000,"
+            "https://trading-marketplace-new3.vercel.app"
+            "https://agricult.farm",
+            "https://www.agricult.farm",
+        ),
     ).split(",")
     if origin.strip()
 ]
@@ -330,8 +336,14 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # --------------------------------------------------
 # PAYSTACK
 # --------------------------------------------------
+FRONTEND_URL = os.getenv(
+    "FRONTEND_URL",
+    "https://trading-marketplace-new3.vercel.app",
+).strip().rstrip("/")
 
-PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "")
+PAYSTACK_SECRET_KEY = os.getenv(
+    "PAYSTACK_SECRET_KEY", ""
+).strip()
 
 PAYSTACK_BASE_URL = os.getenv(
     "PAYSTACK_BASE_URL",
